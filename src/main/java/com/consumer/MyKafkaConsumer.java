@@ -1,58 +1,56 @@
 package com.consumer;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+
+import com.dto.Player;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.utils.ConsumerConstants;
+import com.utils.Utils;
 
 public class MyKafkaConsumer
 {
-	KafkaConsumer<Long, String> consumer;
-	private final static String TOPIC = "anshumanTopic";
-	private final static String BOOTSTRAP_SERVER = "localhost:9092";
+	KafkaConsumer<Integer, JsonNode> consumer;
 
-	private void consumeData()
+	public void consumeData()
 	{
-		consumer = new KafkaConsumer<Long, String>(getProperties());
-		consumer.subscribe(Collections.singletonList(TOPIC));
-		int recordReadCount = 0;
-		while (true)
+		consumer = new KafkaConsumer<Integer, JsonNode>(getConfig());
+		consumer.subscribe(Arrays.asList(ConsumerConstants.TOPIC));
+		ObjectMapper mapper = new ObjectMapper();
+		try
 		{
-			ConsumerRecords<Long, String> records = consumer.poll(1000);
-			if(records.count() == 0) {
-				recordReadCount++;
-				if(recordReadCount > 100)
-					break;
-				else
-					continue;
+			System.out.println(" ######### Started Reading ######## ");
+			ConsumerRecords<Integer, JsonNode> records = consumer.poll(1000);
+			if (records.count() > 0)
+			{
+				for (ConsumerRecord<Integer, JsonNode> record : records)
+				{
+					JsonNode jsonNode = record.value();
+					// prints JSON
+					System.out.println(jsonNode);
+					// prints Object representation of JSON
+					System.out.println(mapper.treeToValue(jsonNode, Player.class));
+				}
 			}
-			for(ConsumerRecord<Long, String> record : records) {
-				System.out.println("KEY : "+record.key()+ " VALUE : "+record.value());
-			}
-			consumer.commitAsync();
+			System.out.println(" ######### Completed Reading ######## ");
+		} 
+		catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} 
+		finally {
+			consumer.close();
 		}
-		consumer.close();
-        System.out.println("DONE");
+		System.out.println("DONE");
 	}
 
-	private Properties getProperties()
+	private Properties getConfig()
 	{
-		final Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVER);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, getClass().getName());
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		return props;
-	}
-
-	public static void main(String[] args)
-	{
-		MyKafkaConsumer consumer = new MyKafkaConsumer();
-		consumer.consumeData();
+		return Utils.getConfig(getClass().getName());
 	}
 }

@@ -2,22 +2,36 @@ package com.dto;
 
 public class Player
 {
+	private int jerseyNumber;
+
 	private String sportName;
 
 	private int age;
 
 	private double height;
+	
+	private String name;
 
 	public Player()
 	{
 	}
 
-	public Player(String sportName, int age, double height)
+	public Player(String name, int jerseyNumber, String sportName, int age, double height)
 	{
+		this.name = name;
+		this.jerseyNumber = jerseyNumber;
 		this.sportName = sportName;
 		this.age = age;
 		this.height = height;
 	}
+	
+
+	@Override
+	public String toString()
+	{
+		return "Player [jerseyNumber=" + jerseyNumber + ", sportName=" + sportName + ", age=" + age + ", height=" + height + ", name=" + name + "]";
+	}
+
 
 	public double getHeight()
 	{
@@ -49,9 +63,23 @@ public class Player
 		this.sportName = sportName;
 	}
 
-	@Override
-	public String toString()
+	public int getJerseyNumber()
 	{
-		return "Player [sportName=" + sportName + ", age=" + age + ", height=" + height + "]";
+		return jerseyNumber;
+	}
+
+	public void setJerseyNumber(int jerseyNumber)
+	{
+		this.jerseyNumber = jerseyNumber;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }
