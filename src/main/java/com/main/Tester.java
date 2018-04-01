@@ -5,7 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.consumer.MyKafkaConsumer;
+import com.consumer.AvroConsumer;
+import com.consumer.JsonConsumer;
 
 @SpringBootApplication
 public class Tester implements CommandLineRunner
@@ -20,6 +21,7 @@ public class Tester implements CommandLineRunner
 	@Override
 	public void run(String... args) throws Exception
 	{
-		new MyKafkaConsumer().consumeData();
+		com.consumer.KafkaConsumer consumer = new AvroConsumer();//new JsonConsumer();
+		consumer.consume();
 	}
 }
