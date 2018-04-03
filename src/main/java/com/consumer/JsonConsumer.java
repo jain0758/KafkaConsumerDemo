@@ -17,12 +17,15 @@ public class JsonConsumer implements com.consumer.KafkaConsumer
 {
 	private final String TOPIC_NAME = "anshumanTopic";
 	
-	KafkaConsumer<Integer, JsonNode> consumer;
+	private KafkaConsumer<Integer, JsonNode> consumer;
+	
+	public JsonConsumer() {
+		consumer = new KafkaConsumer<Integer, JsonNode>(getConfig());
+		consumer.subscribe(Arrays.asList(TOPIC_NAME));
+	}
 
 	public void consume()
 	{
-		consumer = new KafkaConsumer<Integer, JsonNode>(getConfig());
-		consumer.subscribe(Arrays.asList(TOPIC_NAME));
 		ObjectMapper mapper = new ObjectMapper();
 		try
 		{
