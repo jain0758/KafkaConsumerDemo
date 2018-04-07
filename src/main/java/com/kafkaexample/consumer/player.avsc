@@ -1,0 +1,13 @@
+{
+  "namespace": "nl.rubix.avro",
+  "type": "record",
+  "name": "Player_Avro",
+  "fields": [
+    {"name": "sportName", "type": "string", "doc" : "sport played by player"},
+    {"name": "jerseyNumber", "type": "int", "doc" : "jersey number of player"},
+	{"name": "name", "type": "string", "doc" : "player name"},
+    {"name": "age", "type": "int"},
+    {"name": "height",  "type": "double"}
+  ],
+  "doc:" : "A schema for player movement events"
+}
