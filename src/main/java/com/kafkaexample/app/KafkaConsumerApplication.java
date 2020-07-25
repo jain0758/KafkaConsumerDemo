@@ -1,4 +1,4 @@
-package com.kafkaexample.main;
+package com.kafkaexample.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,18 +7,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.kafkaexample.consumer.GenericKafkaConsumer;
+import com.kafkaexample.consumer.ConsumerInterface;
 
 @SpringBootApplication(scanBasePackages={"com.kafkaexample"})
-public class Tester implements CommandLineRunner
+public class KafkaConsumerApplication implements CommandLineRunner
 {
 	@Autowired
 	@Qualifier("avroConsumer")
-	private GenericKafkaConsumer consumer;
+	private ConsumerInterface consumer;
 	
 	public static void main(String[] args)
 	{
-		SpringApplication application = new SpringApplication(Tester.class);
+		SpringApplication application = new SpringApplication(KafkaConsumerApplication.class);
 		application.setBannerMode(Banner.Mode.OFF);
 		application.run(args);
 	}

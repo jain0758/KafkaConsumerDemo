@@ -3,13 +3,9 @@ package com.kafkaexample.dto;
 public class Player
 {
 	private int jerseyNumber;
-
 	private String sportName;
-
 	private int age;
-
 	private double height;
-	
 	private String name;
 
 	public Player()
@@ -24,14 +20,12 @@ public class Player
 		this.age = age;
 		this.height = height;
 	}
-	
 
 	@Override
 	public String toString()
 	{
 		return "Player [jerseyNumber=" + jerseyNumber + ", sportName=" + sportName + ", age=" + age + ", height=" + height + ", name=" + name + "]";
 	}
-
 
 	public double getHeight()
 	{
